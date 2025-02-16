@@ -24,7 +24,7 @@
                     <div class="w-2/6 flex gap-4">
                         <a href="/products?supplier={{ $supplier['id'] }}" class="bg-blue-800 px-4 h-10 rounded-md flex items-center cursor-pointer ml-auto hover:bg-blue-950 transition-bg duration-200 text-white hover:text-gray-100 transition-colors duration-200">Products</a>
 
-                        <button class="bg-red-500 px-4 h-10 rounded-md block hover:bg-red-600 transition-bg duration-200 text-white hover:text-gray-100 transition-colors duration-200">Delete</button>
+                        <button data-supplier-id="{{ $supplier['id'] }}" class="delete-supplier-button bg-red-500 px-4 h-10 rounded-md block hover:bg-red-600 transition-bg duration-200 text-white hover:text-gray-100 transition-colors duration-200">Delete</button>
                     </div>
                 </div>
             @endforeach

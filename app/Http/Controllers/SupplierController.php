@@ -73,4 +73,19 @@ class SupplierController extends Controller
             return $this->errorService->handleExceptionJSON($e);
         }
     }
+
+
+    public function deleteSupplier($supplierId) {
+        try{
+            $supplier = Supplier::findOrFail($supplierId);
+            $supplier->delete();
+
+            return response()->json([
+                'message' => 'Supplier deleted succesfully.'
+            ], 200);
+        }
+        catch(Exception $e) { 
+            return $this->errorService->handleExceptionJSON($e);
+        }
+    }
 }

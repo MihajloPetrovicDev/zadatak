@@ -15,3 +15,5 @@ Route::get('/products', [ProductController::class, 'getProductsPage']);
 Route::get('/api/get-all-suppliers', [SupplierController::class, 'getAllSuppliers']);
 
 Route::patch('/api/change-supplier-name', [SupplierController::class, 'changeSupplierName']);
+
+Route::delete('/api/delete-supplier/{supplierId}', [SupplierController::class, 'deleteSupplier']);
