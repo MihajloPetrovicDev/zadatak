@@ -5,10 +5,14 @@
 </head>
 
 <body>
-    <a class="absolute bg-gray-300 py-2 px-4 rounded-md text-2xl font-bold top-5 left-10 hover:text-red-500 transition-colors duration-200" href="/">< Home</a>
+    <a href="/" class="absolute bg-gray-300 py-2 px-4 rounded-md text-2xl font-bold top-5 left-10 hover:text-red-500 transition-colors duration-200">< Home</a>
+
+    @if(isset($supplier) && $supplier)
+        <button class="absolute bg-gray-300 py-2 px-4 rounded-md text-2xl font-bold top-5 right-10 hover:text-red-500 transition-colors duration-200">Download .csv</button>
+    @endif
 
     <div class="mx-auto bg-gray-300 pb-14 pt-10 px-20 mt-36 w-5/6 rounded-md">
-        <h2 class="text-center font-extrabold text-5xl">Parts</h2>
+        <h2 class="text-center font-extrabold text-5xl">Parts {{ isset($supplier) && $supplier ? '- '.$supplier->supplier_name : '' }}</h2>
 
         <div class="h-[550px] flex flex-col gap-5 mt-14 bg-gray-100 rounded-md p-10 pt-0 overflow-y-auto border-gray-100 border-[30px] border-gray-100 rounded-md">
             <div class="bg-gray-100 sticky top-0 z-10 flex px-4 py-2 flex items-center gap-4 font-bold">

@@ -21,19 +21,24 @@ class PartController extends Controller
     }
 
 
-    public function getPartsPage() {
-        $partsResponse = $this->getAllParts();
+    public function getAllPartsPage() {
+        $allPartsResponse = $this->getAllParts();
 
-        if($partsResponse->isSuccessful()) {
-            $parts = json_decode($partsResponse->getContent(), true)['parts'] ?? [];
+        if($allPartsResponse->isSuccessful()) {
+            $parts = json_decode($allPartsResponse->getContent(), true)['parts'] ?? [];
         }
         else {
-            abort($partsResponse->getStatusCode());
+            abort($allPartsResponse->getStatusCode());
         }
 
-        $allSuppliers = Supplier::all();
-        $allConditions = Condition::all();
-        $allCategories = Category::all();
+        try {
+            $allSuppliers = Supplier::all();
+            $allConditions = Condition::all();
+            $allCategories = Category::all();
+        }
+        catch(Exception $e) { 
+            return $this->errorService->handleException($e);
+        }
 
         return view('parts', compact('parts', 'allSuppliers', 'allConditions', 'allCategories'));
     }
@@ -42,6 +47,45 @@ class PartController extends Controller
     public function getAllParts() {
         try {
             $parts = Part::all();
+
+            return response()->json([
+                'parts' => $parts
+            ], 200);
+        }
+        catch(Exception $e) { 
+            return $this->errorService->handleExceptionJSON($e);
+        }
+    }
+
+
+    public function getSupplierPartsPage($supplierId) {
+        $supplier = Supplier::find($supplierId);
+
+        $supplierPartsResponse = $this->getSupplierParts($supplierId);
+
+        if($supplierPartsResponse->isSuccessful()) {
+            $parts = json_decode($supplierPartsResponse->getContent(), true)['parts'] ?? [];
+        }
+        else {
+            abort($supplierPartsResponse->getStatusCode());
+        }
+
+        try {
+            $allSuppliers = Supplier::all();
+            $allConditions = Condition::all();
+            $allCategories = Category::all();
+        }
+        catch(Exception $e) { 
+            return $this->errorService->handleException($e);
+        }
+
+        return view('parts', compact('parts', 'allSuppliers', 'allConditions', 'allCategories', 'supplier'));
+    }
+
+
+    public function getSupplierParts($supplierId) {
+        try {
+            $parts = Part::where('supplier_id', $supplierId)->get();
 
             return response()->json([
                 'parts' => $parts

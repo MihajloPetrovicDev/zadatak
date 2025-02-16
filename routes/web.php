@@ -10,16 +10,6 @@ Route::get('/', function () {
 
 Route::get('/suppliers', [SupplierController::class, 'getSuppliersPage']);
 
-Route::get('/parts', [PartController::class, 'getPartsPage']);
+Route::get('/parts', [PartController::class, 'getAllPartsPage']);
 
-Route::get('/api/get-all-suppliers', [SupplierController::class, 'getAllSuppliers']);
-
-Route::patch('/api/change-supplier-name', [SupplierController::class, 'changeSupplierName']);
-
-Route::delete('/api/delete-supplier/{supplierId}', [SupplierController::class, 'deleteSupplier']);
-
-Route::get('/api/get-all-parts', [PartController::class, 'getAllParts']);
-
-Route::patch('/api/update-part', [PartController::class, 'updatePart']);
-
-Route::delete('/api/delete-part/{partId}', [PartController::class, 'deletePart']);
+Route::get('/supplier-parts/{supplierId}', [PartController::class, 'getSupplierPartsPage']);
