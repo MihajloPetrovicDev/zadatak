@@ -41,15 +41,36 @@ class SupplierController extends Controller
             ], 200);
         }
         catch(Exception $e) { 
-            $this->errorService->logException($e);
+            return $this->errorService->handleExceptionJSON($e);
+        }
+    }
 
-            return response()->json(['errors' => [
-                'errors' => [
-                    'error' => [
-                        'message' => $e->getMessage()
-                    ]
-                ]
-            ]], 500);
+
+    public function changeSupplierName(Request $request) {
+        $requestData = $request->validate([
+            'newSupplierName' => ['required', 'max: 255'],
+            'supplierId' => ['required', 'int', 'min:0'],
+        ],
+        [
+            'newSupplierName.required' => 'Supplier name is reqired.',
+            'newSupplierName.max' => "Supplier name can't be longer than 255 characters.",
+            'supplierId.required' => 'Supplier ID is reqired.',
+            'supplierId.int' => "Invalid supplier ID.",
+            'supplierId.min' => "Invalid supplier ID."
+        ]);
+
+        try {
+            $supplier = Supplier::findOrFail($requestData['supplierId']);
+
+            $supplier->supplier_name = $requestData['newSupplierName'];
+            $supplier->save();
+
+            return response()->json([
+                'message' => 'Supplier name changed succesfully.'
+            ], 200);
+        }
+        catch(Exception $e) { 
+            return $this->errorService->handleExceptionJSON($e);
         }
     }
 }

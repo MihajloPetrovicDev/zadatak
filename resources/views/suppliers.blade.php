@@ -15,9 +15,9 @@
                 <div class="bg-gray-400 py-4 px-8 rounded-md flex items-center">
                     <div class="flex w-4/6">
                         <div class="flex w-full">
-                            <input class="border w-full border-gray-300 h-10 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" value="{{ $supplier['supplier_name'] }}">
+                            <input class="supplier-name-input border w-full border-gray-300 h-10 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" value="{{ $supplier['supplier_name'] }}">
                         
-                            <button class="bg-blue-800 px-4 h-10 rounded-md rounded-l-none block -ml-16 w-16 hover:bg-blue-950 transition-bg duration-200 text-white hover:text-gray-100 transition-colors duration-200">Save</button>
+                            <button data-supplier-id="{{ $supplier['id'] }}" class="save-supplier-name-button bg-blue-800 px-4 h-10 rounded-md rounded-l-none block -ml-16 w-16 hover:bg-blue-950 transition-bg duration-200 text-white hover:text-gray-100 transition-colors duration-200">Save</button>
                         </div>
                     </div>
 
@@ -30,5 +30,7 @@
             @endforeach
         </div>
     </div>
+
+    @vite('resources/js/inits/suppliers_init.js')
 </body>
 </html>
