@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Exception;
 use App\Models\Part;
-use App\Models\Offer;
 use App\Models\Category;
 use App\Models\Supplier;
 use App\Models\Condition;
@@ -76,22 +75,16 @@ class InsertCsvIntoDb extends Command
                 }
 
                 $part = Part::create([
-                    'part_number' => $rowData['part_number'] ?? null,
+                    'days_valid' => !empty($rowData['days_valid']) ? $rowData['days_valid'] : null,
+                    'priority' => !empty($rowData['priority']) ? $rowData['priority'] : null,
+                    'part_number' => !empty($rowData['part_number']) ? $rowData['part_number'] : null,
                     'part_desc' => $rowData['part_desc'],
-                    'category_id' => $category->id ?? null,
+                    'quantity' => !empty($rowData['quantity']) ? $rowData['quantity'] : null,
+                    'price' => !empty($rowData['price']) ? $rowData['price'] : null,
+                    'condition_id' => isset($condition) ? $condition->id : null,
+                    'supplier_id' => isset($supplier) ? $supplier->id : null,
+                    'category_id' => isset($category) ? $category->id : null,
                 ]);
-
-                if(!empty($rowData['days_valid']) && !empty($rowData['priority']) && !empty($rowData['quantity']) && !empty($rowData['price']) && isset($condition) && $part->id && isset($supplier)) {
-                    $offer = Offer::create([
-                        'days_valid' => $rowData['days_valid'],
-                        'priority' => $rowData['priority'],
-                        'quantity' => $rowData['quantity'],
-                        'price' => $rowData['price'],
-                        'condition_id' => $condition->id,
-                        'part_id' => $part->id,
-                        'supplier_id' => $supplier->id,
-                    ]);
-                }
             }
 
             DB::commit();
