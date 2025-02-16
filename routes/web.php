@@ -21,3 +21,5 @@ Route::delete('/api/delete-supplier/{supplierId}', [SupplierController::class, '
 Route::get('/api/get-all-parts', [PartController::class, 'getAllParts']);
 
 Route::patch('/api/update-part', [PartController::class, 'updatePart']);
+
+Route::delete('/api/delete-part/{partId}', [PartController::class, 'deletePart']);

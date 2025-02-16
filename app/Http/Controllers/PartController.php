@@ -125,4 +125,19 @@ class PartController extends Controller
             return $this->errorService->handleExceptionJSON($e);
         }
     }
+
+
+    public function deletePart($partId) {
+        try{
+            $part = Part::findOrFail($partId);
+            $part->delete();
+
+            return response()->json([
+                'message' => 'Part deleted succesfully.'
+            ], 200);
+        }
+        catch(Exception $e) { 
+            return $this->errorService->handleExceptionJSON($e);
+        }
+    }
 }

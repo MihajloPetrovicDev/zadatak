@@ -2,6 +2,7 @@ import '../app';
 
 
 const savePartButtons = document.querySelectorAll('.save-part-button');
+const deletePartButtons = document.querySelectorAll('.delete-part-button');
 
 
 savePartButtons.forEach(savePartButton => {
@@ -36,6 +37,25 @@ savePartButtons.forEach(savePartButton => {
                 categoryId: categorySelect.value
             });
 
+            console.log(response.data.message);
+        }
+        catch(error) {
+            console.log(error);
+        }
+    });
+});
+
+
+deletePartButtons.forEach(deletePartButton => {
+    let partId = deletePartButton.getAttribute('data-part-id');
+
+    deletePartButton.addEventListener('click', async function(event) {
+        event.preventDefault();
+
+        try {
+            const response = await axios.delete('/api/delete-part/' + partId);
+
+            deletePartButton.parentElement.remove();
             console.log(response.data.message);
         }
         catch(error) {

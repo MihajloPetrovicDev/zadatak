@@ -37,7 +37,6 @@ deleteSupplierButtons.forEach(deleteSupplierButton => {
             const response = await axios.delete('/api/delete-supplier/' + supplierId);
 
             deleteSupplierButton.parentElement.parentElement.remove();
-
             console.log(response.data.message);
         }
         catch(error) {
