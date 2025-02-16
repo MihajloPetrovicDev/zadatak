@@ -11,6 +11,10 @@
         <h2 class="text-center font-extrabold text-5xl">Suppliers</h2>
 
         <div class="h-[550px] flex flex-col gap-5 mt-14 bg-gray-100 rounded-md p-10 overflow-y-auto border-gray-100 border-[30px] border-gray-100 rounded-md">
+            @if(empty($suppliers))
+                <p class="text-center text-xl mt-6 italic text-gray-600">No results.</p>
+            @endif
+            
             @foreach ($suppliers as $supplier)
                 <div class="bg-gray-400 py-4 px-8 rounded-md flex items-center">
                     <div class="flex w-4/6">

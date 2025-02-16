@@ -8,7 +8,7 @@
     <a href="/" class="absolute bg-gray-300 py-2 px-4 rounded-md text-2xl font-bold top-5 left-10 hover:text-red-500 transition-colors duration-200">< Home</a>
 
     @if(isset($supplier) && $supplier)
-        <button class="absolute bg-gray-300 py-2 px-4 rounded-md text-2xl font-bold top-5 right-10 hover:text-red-500 transition-colors duration-200">Download .csv</button>
+        <button id="download-supplier-parts-csv-button" data-supplier-id="{{ isset($supplier) && $supplier ? $supplier->id : '' }}" class="absolute bg-gray-300 py-2 px-4 rounded-md text-2xl font-bold top-5 right-10 hover:text-red-500 transition-colors duration-200">Download .csv</button>
     @endif
 
     <div class="mx-auto bg-gray-300 pb-14 pt-10 px-20 mt-36 w-5/6 rounded-md">
@@ -39,6 +39,10 @@
                 <p class="w-[6%] px-1 truncate ..."></p>
             </div>
 
+            @if(empty($parts))
+                <p class="text-center text-xl mt-6 italic text-gray-600">No results.</p>
+            @endif
+
             @foreach ($parts as $part)
                 <div class="bg-gray-400 p-4 rounded-md flex items-center gap-4">
                     {{-- Supplier --}}
@@ -57,7 +61,7 @@
                     <input placeholder="N/A" class="priority-input border w-[6%] border-gray-300 h-10 px-2 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" value="{{ $part['priority'] ?? '' }}">
 
                     {{-- Part Number --}}
-                    <input class="part-number-input border w-[10%] border-gray-300 h-10 px-2 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" value="{{ $part['part_number'] }}">
+                    <input placeholder="N/A" class="part-number-input border w-[10%] border-gray-300 h-10 px-2 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" value="{{ $part['part_number'] }}">
 
                     {{-- Part Description --}}
                     <input class="part-description-input border w-[20%] border-gray-300 h-10 px-2 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" value="{{ $part['part_desc'] }}">

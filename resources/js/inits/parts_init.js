@@ -3,6 +3,7 @@ import '../app';
 
 const savePartButtons = document.querySelectorAll('.save-part-button');
 const deletePartButtons = document.querySelectorAll('.delete-part-button');
+const downloadSupplierPartsCsvButton = document.getElementById('download-supplier-parts-csv-button');
 
 
 savePartButtons.forEach(savePartButton => {
@@ -62,4 +63,13 @@ deletePartButtons.forEach(deletePartButton => {
             console.log(error);
         }
     });
+});
+
+
+downloadSupplierPartsCsvButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        let supplierId = downloadSupplierPartsCsvButton.getAttribute('data-supplier-id');
+
+        window.location.href = '/download-supplier-parts-csv/' + supplierId;
 });

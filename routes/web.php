@@ -13,3 +13,5 @@ Route::get('/suppliers', [SupplierController::class, 'getSuppliersPage']);
 Route::get('/parts', [PartController::class, 'getAllPartsPage']);
 
 Route::get('/supplier-parts/{supplierId}', [PartController::class, 'getSupplierPartsPage']);
+
+Route::get('/download-supplier-parts-csv/{supplierId}', [SupplierController::class, 'downloadSupplierPartsCsv']);

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Supplier;
-use App\Services\ErrorService;
 use Exception;
+use App\Models\Part;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Services\ErrorService;
+use Illuminate\Support\Facades\Response;
 
 class SupplierController extends Controller
 {
@@ -86,6 +88,52 @@ class SupplierController extends Controller
         }
         catch(Exception $e) { 
             return $this->errorService->handleExceptionJSON($e);
+        }
+    }
+
+
+    public function downloadSupplierPartsCsv($supplierId) {
+        try {
+            $supplier = Supplier::findOrFail($supplierId);
+            $parts = Part::where('supplier_id', $supplierId)->get();
+
+            $formattedName = preg_replace('/[^a-zA-Z0-9]/', '_', $supplier->supplier_name);
+            $dateTime = now()->format('Y_m_d-H_i');
+            $fileName = $formattedName.'_'.$dateTime.'.csv';
+
+            $newCsvFile = fopen('php://temp', 'r+');
+
+            fputcsv($newCsvFile, ['supplier_name', 'days_valid', 'priority', 'part_number', 'part_desc', 'quantity', 'price', 'condition', 'category']);
+
+            foreach($parts as $part) {
+                fputcsv($newCsvFile, [
+                    $part->supplier->supplier_name,
+                    $part->days_valid,
+                    $part->priority,
+                    $part->part_number,
+                    $part->part_desc,
+                    $part->quantity,
+                    $part->price,
+                    $part->condition->condition_name,
+                    $part->category->category_name
+                ], ',', "\x1F");
+                // \x1F is used as the enclosure char because it can be deleted troughout the whole file later without causing any issues,
+                // effectively making it so that there are no enclosure chars in the csv file
+            }
+
+            rewind($newCsvFile);
+            $csvData = stream_get_contents($newCsvFile);
+            $csvData = str_replace("\x1F", "", $csvData);
+            
+            fclose($newCsvFile);
+
+            return Response::make($csvData, 200, [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
+            ]);
+        }
+        catch(Exception $e) { 
+            return $this->errorService->handleException($e);
         }
     }
 }
